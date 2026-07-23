@@ -36,10 +36,10 @@ Ejecute la siguiente secuencia unificada de comandos en su terminal para despleg
 
 ```bash
 # 1. Clonar el repositorio e ingresar al directorio
-git clone [https://github.com/EnocZamora/AgroShare.git](https://github.com/EnocZamora/AgroShare.git) && cd AgroShare
-
-# 2. Instalar dependencias de PHP
-composer install
+git clone https://github.com/EnocZamora/AgroShare
+# Elegir la ruta de preferencia para los archivos clonados.
+# 2. Instalar el entorno de desarrollo laragon desde su web oficial (Verción full)
+https://laragon.org/download
 
 # 3. Crear el archivo de configuración .env
 cp .env.example .env
