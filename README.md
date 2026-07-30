@@ -1,6 +1,6 @@
 # AgroShare
 
-## Descripción General
+## Descripción General de la plataformasssss
 AgroShare es una plataforma digital orientada al sector agropecuario de Nicaragua que optimiza la comercialización directa entre productores locales y compradores, reduciendo los márgenes de intermediación y garantizando inclusión mediante una arquitectura segura y accesible.
 
 Este repositorio contiene la estructura base en Laravel, abarcando la configuración del entorno, base de datos relacional y arquitectura de software.
