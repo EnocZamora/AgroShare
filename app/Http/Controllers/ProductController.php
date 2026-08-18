@@ -55,4 +55,16 @@ class ProductController extends Controller
         $product->load(['category', 'user']);
         return view('products.show', compact('product'));
     }
+
+
+    // Mostrar los productos del usuario autenticado
+    public function myProducts()
+    {
+        $products = Product::where('user_id', Auth::id())
+            ->with(['category'])
+            ->latest()
+            ->get();
+            
+        return view('products.my-products', compact('products'));
+    }
 }
