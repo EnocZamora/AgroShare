@@ -48,4 +48,11 @@ class ProductController extends Controller
 
         return redirect()->route('products.index')->with('success', 'Producto creado exitosamente.');
     }
+
+    // Mostrar un producto específico
+    public function show(Product $product)
+    {
+        $product->load(['category', 'user']);
+        return view('products.show', compact('product'));
+    }
 }
