@@ -9,8 +9,8 @@ Este repositorio contiene la estructura base en Laravel, abarcando la configurac
 ## Tecnologías Utilizadas
 - **Lenguaje Principal:** PHP
 - **Framework Backend:** Laravel
-- **Framework Frontend:** Bootstrap / HTML5 / CSS3
-- **Motor de Base de Datos:** MySQL (Servidor local Laragon)
+- **Framework Frontend:** Tailwind / HTML5 / CSS3
+- **Motor de Base de Datos:** MySQL (Servidor local XAMPP)
 - **Gestor de Dependencias:** Composer
 - **Control de Versiones:** Git & GitHub
 
@@ -24,7 +24,7 @@ La arquitectura del sistema contempla una gestión de usuarios fundamentada en t
 
 
 ## Requisitos Previos Mínimos
-- **Servidor Local:** Laragon
+- **Servidor Local:** XAMPP/Laragon
 - **PHP:** >= 8.1
 - **Composer:** Instalado en el sistema
 - **MySQL Server:** Activo en puerto 3306
