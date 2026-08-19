@@ -13,7 +13,7 @@ Route::get('/', function () {
     return redirect()->route('products.index');
 })->name('home.index');
 
-// Rutas Públicas de Productos
+// Rutas Públicas de Productos (Catálogo y Detalle)
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products-list', [ProductController::class, 'index'])->name('products.list');
 
@@ -31,7 +31,7 @@ Route::middleware(['auth'])->group(function () {
     // Cierre de sesión
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
-    // IMPORTANTE: Las rutas estáticas van antes de las que tienen {product}
+    // Gestión de Productos del Usuario (Protegidas)
     Route::get('/my-products', [ProductController::class, 'myProducts'])->name('products.my-products');
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
@@ -52,12 +52,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/pagos/metodos', [PaymentController::class, 'index'])->name('payments.methods');
     Route::post('/pagos/metodos', [PaymentController::class, 'store'])->name('payments.store');
 
-    // Rutas de productos que manejan parámetros dinámicos (al final del grupo auth)
+    // Acciones de modificación de productos
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
 
 });
 
-// Ruta dinámica pública al final de todo para evitar conflictos con palabras clave como 'create'
+// Ruta dinámica pública para ver el detalle de un producto
 Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
