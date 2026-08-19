@@ -4,33 +4,27 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Chat extends Model
+class Message extends Model
 {
     protected $fillable = [
-        'product_id',
-        'buyer_id',
-        'seller_id'
+        'chat_id',
+        'sender_id',
+        'content',
+        'read_at'
     ];
 
-    public function product(): BelongsTo
+    protected $casts = [
+        'read_at' => 'datetime',
+    ];
+
+    public function chat(): BelongsTo
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Chat::class);
     }
 
-    public function buyer(): BelongsTo
+    public function sender(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'buyer_id');
-    }
-
-    public function seller(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'seller_id');
-    }
-
-    public function messages(): HasMany
-    {
-        return $this->hasMany(Message::class);
+        return $this->belongsTo(User::class, 'sender_id');
     }
 }

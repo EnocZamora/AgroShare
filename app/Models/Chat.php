@@ -6,31 +6,31 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Product extends Model
+class Chat extends Model
 {
     protected $fillable = [
-        'user_id',
-        'category_id',
-        'title',
-        'description',
-        'price',
-        'unit',
-        'stock',
-        'status'
+        'product_id',
+        'buyer_id',
+        'seller_id'
     ];
 
-    public function user(): BelongsTo
+    public function product(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Product::class);
     }
 
-    public function category(): BelongsTo
+    public function buyer(): BelongsTo
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(User::class, 'buyer_id');
     }
 
-    public function chats(): HasMany
+    public function seller(): BelongsTo
     {
-        return $this->hasMany(Chat::class);
+        return $this->belongsTo(User::class, 'seller_id');
+    }
+
+    public function messages(): HasMany
+    {
+        return $this->hasMany(Message::class);
     }
 }
