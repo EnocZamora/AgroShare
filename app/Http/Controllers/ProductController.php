@@ -6,6 +6,7 @@ use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -16,15 +17,24 @@ class ProductController extends Controller
         return view('products.index', compact('products'));
     }
 
-    // Mostrar los productos del usuario autenticado
-    public function myProducts()
+    // Mostrar los productos del usuario autenticado con filtrado por pestañas
+    public function myProducts(Request $request)
     {
-        $products = Product::where('user_id', Auth::id())
-            ->with(['category'])
-            ->latest()
-            ->get();
+        $tab = $request->get('tab', 'activas');
+
+        $query = Product::where('user_id', Auth::id())->with(['category']);
+
+        if ($tab === 'finalizadas') {
+            $query->where('status', 'finalizado');
+        } elseif ($tab === 'incompletas') {
+            $query->where('status', 'incompleto');
+        } else {
+            $query->where('status', 'activo');
+        }
+
+        $products = $query->latest()->get();
             
-        return view('products.my-products', compact('products'));
+        return view('products.my-products', compact('products', 'tab'));
     }
 
     // Mostrar formulario para crear producto
@@ -34,7 +44,7 @@ class ProductController extends Controller
         return view('products.create', compact('categories'));
     }
 
-    // Guardar el producto en la base de datos
+    // Guardar el producto y su imagen en la base de datos
     public function store(Request $request)
     {
         $request->validate([
@@ -44,7 +54,13 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'unit' => 'required|string|max:50',
             'stock' => 'required|integer|min:0',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('products', 'public');
+        }
 
         Product::create([
             'user_id' => Auth::id(),
@@ -55,6 +71,7 @@ class ProductController extends Controller
             'unit' => $request->unit,
             'stock' => $request->stock,
             'status' => 'activo',
+            'image' => $imagePath,
         ]);
 
         return redirect()->route('products.my-products')->with('success', 'Producto creado exitosamente.');
@@ -78,7 +95,7 @@ class ProductController extends Controller
         return view('products.edit', compact('product', 'categories'));
     }
 
-    // Actualizar el producto en la base de datos
+    // Actualizar el producto y su imagen
     public function update(Request $request, Product $product)
     {
         if ($product->user_id !== Auth::id()) {
@@ -92,7 +109,17 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'unit' => 'required|string|max:50',
             'stock' => 'required|integer|min:0',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
+
+        $imagePath = $product->image;
+        if ($request->hasFile('image')) {
+            // Eliminar imagen anterior si existe
+            if ($product->image && Storage::disk('public')->exists($product->image)) {
+                Storage::disk('public')->delete($product->image);
+            }
+            $imagePath = $request->file('image')->store('products', 'public');
+        }
 
         $product->update([
             'category_id' => $request->category_id,
@@ -101,16 +128,39 @@ class ProductController extends Controller
             'price' => $request->price,
             'unit' => $request->unit,
             'stock' => $request->stock,
+            'image' => $imagePath,
         ]);
 
         return redirect()->route('products.my-products')->with('success', 'Producto actualizado exitosamente.');
     }
 
-    // Eliminar el producto
+    // Actualizar únicamente el estado del producto
+    public function updateStatus(Request $request, Product $product)
+    {
+        if ($product->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $request->validate([
+            'status' => 'required|in:activo,finalizado,incompleto',
+        ]);
+
+        $product->update([
+            'status' => $request->status,
+        ]);
+
+        return back()->with('success', 'Estado del producto actualizado exitosamente.');
+    }
+
+    // Eliminar el producto y su imagen asociada
     public function destroy(Product $product)
     {
         if ($product->user_id !== Auth::id()) {
             abort(403);
+        }
+
+        if ($product->image && Storage::disk('public')->exists($product->image)) {
+            Storage::disk('public')->delete($product->image);
         }
 
         $product->delete();
