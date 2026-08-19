@@ -71,6 +71,15 @@
             <p class="text-[10px] text-gray-400 mt-1">Selecciona el rubro exacto para facilitar la búsqueda al comprador.</p>
         </div>
 
+        <!-- Precio del producto -->
+<div>
+    <label for="price" class="block text-xs font-bold text-gray-700 mb-1">Precio ($):</label>
+    <input type="number" step="0.01" name="price" id="price" value="{{ old('price') }}" required min="0"
+        class="w-full px-3 py-2.5 text-sm border border-emerald-700/40 rounded-xl focus:outline-none focus:border-[#1B4D3E] text-gray-800"
+        placeholder="Ej. 150.00">
+    <p class="text-[10px] text-gray-400 mt-1">Precio unitario o por lote acordado.</p>
+</div>
+
         <!-- Descripción -->
         <div>
             <label for="description" class="block text-xs font-bold text-gray-700 mb-1">Descripción:</label>
