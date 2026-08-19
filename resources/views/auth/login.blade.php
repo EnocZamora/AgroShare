@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión - AgroShare</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <!-- CDN de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-slate-50 min-h-screen flex items-center justify-center p-4">
     <div class="w-full max-w-md bg-white rounded-2xl shadow-xl border border-slate-100 p-8 space-y-6">
@@ -23,7 +24,7 @@
         @endif
 
         <!-- Formulario de Login -->
-        <form action="{{ route('auth.login') }}" method="POST" class="space-y-4">
+        <form action="{{ route('auth.login.store') }}" method="POST" class="space-y-4">
             @csrf
 
             <!-- Correo Electrónico -->
