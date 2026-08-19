@@ -7,7 +7,6 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
-app()->setLocale(session('locale', 'es'));
 
 /*
 |--------------------------------------------------------------------------
@@ -29,7 +28,7 @@ Route::get('lang/{lang}', function ($lang) {
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 // Rutas de autenticación

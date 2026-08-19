@@ -79,7 +79,7 @@
             <h2 class="text-[13px] md:text-xl font-bold leading-tight">Conecta con productores agrícolas de Nicaragua</h2>
         </div>
         <div class="absolute right-0 top-0 bottom-0 w-1/2">
-            <img src="https://images.unsplash.com/photo-1595974482597-4b8cb8fc9cc9?w=800&fit=crop" alt="Agricultores" class="w-full h-full object-cover">
+            <img src="https://cenida.una.edu.ni/wp-content/uploads/2023/01/4-2-800x445.jpg">
             <div class="absolute inset-0 bg-gradient-to-r from-[#1B4D3E] to-transparent"></div>
         </div>
     </div>
@@ -101,7 +101,7 @@
                 <span class="text-[9px] md:text-xs font-semibold text-gray-800 text-center leading-tight">Granos y semillas</span>
             </div>
             <div class="flex flex-col items-center border border-gray-200 rounded-xl p-2 md:p-4 bg-white shadow-sm hover:border-[#1B4D3E] transition md:w-32">
-                <img src="https://cdn-icons-png.flaticon.com/512/1065/1065546.png" alt="Aves" class="w-8 h-8 md:w-12 md:h-12 object-contain mb-1 md:mb-2">
+                <img src="https://cdn-icons-png.flaticon.com/512/293/293092.png" alt="Aves" class="w-8 h-8 md:w-12 md:h-12 object-contain mb-1 md:mb-2">
                 <span class="text-[9px] md:text-xs font-semibold text-gray-800 text-center leading-tight">Aves de corral</span>
             </div>
         </div>
