@@ -15,8 +15,7 @@ Route::get('/', function () {
 
 // Rutas Públicas de Productos
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::get('/products-list', [ProductController::class, 'index'])->name('products.list'); // Alias etiquetado según la especificación
-Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+Route::get('/products-list', [ProductController::class, 'index'])->name('products.list');
 
 // Autenticación y Registro (Rutas Públicas)
 Route::middleware('guest')->group(function () {
@@ -32,28 +31,33 @@ Route::middleware(['auth'])->group(function () {
     // Cierre de sesión
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
-    // Gestión de Mis Productos (Crear, Editar, Listar propios, Actualizar, Borrar)
+    // IMPORTANTE: Las rutas estáticas van antes de las que tienen {product}
     Route::get('/my-products', [ProductController::class, 'myProducts'])->name('products.my-products');
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
-    Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
-    Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
-    Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
 
     // Rutas de Chats
     Route::get('/chats', [ChatController::class, 'index'])->name('chats.index');
-    Route::get('/chats/{chat}', [ChatController::class, 'show'])->name('chats.show');
     Route::post('/chats', [ChatController::class, 'store'])->name('chats.store');
+    Route::get('/chats/{chat}', [ChatController::class, 'show'])->name('chats.show');
 
     // Panel de Administración y Auditoría
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 
-    // Módulo Perfil y Configuración (Asignación José Rostran)
+    // Módulo Perfil y Configuración
     Route::get('/perfil', [ProfileController::class, 'show'])->name('profile.show');
     Route::put('/perfil', [ProfileController::class, 'update'])->name('profile.update');
 
-    // Módulo Gestión de Pagos (Asignación José Rostran)
+    // Módulo Gestión de Pagos
     Route::get('/pagos/metodos', [PaymentController::class, 'index'])->name('payments.methods');
     Route::post('/pagos/metodos', [PaymentController::class, 'store'])->name('payments.store');
 
+    // Rutas de productos que manejan parámetros dinámicos (al final del grupo auth)
+    Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
+    Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+    Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+
 });
+
+// Ruta dinámica pública al final de todo para evitar conflictos con palabras clave como 'create'
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
