@@ -12,7 +12,7 @@
             <img src="{{ asset('images/logo.png') }}" alt="Agroshare Logo" class="w-full h-auto object-contain">
         </div>
         
-        <!-- Ubicación y Perfil Móvil (Este sí mantiene la ruta del perfil por ser el acceso directo al usuario) -->
+        <!-- Ubicación y Perfil Móvil -->
         <a href="{{ route('profile.show') }}" class="flex flex-col items-end gap-1">
             <span class="flex items-center gap-1 text-[10px] font-bold text-gray-800">
                 <svg class="w-3 h-3 text-[#1B4D3E]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
@@ -58,7 +58,6 @@
             <span class="text-[10px] md:text-xs font-semibold text-gray-700 leading-tight">Mis<br>publicaciones</span>
         </a>
         
-        <!-- CORREGIDO: Ahora apunta correctamente a la vista general de configuraciones -->
         <a href="{{ route('settings.index') }}" class="border border-gray-200 hover:border-[#1B4D3E] rounded-xl p-3 flex flex-col items-center justify-center text-center shadow-sm transition bg-white group">
             <div class="w-10 h-10 md:w-12 md:h-12 border border-gray-200 group-hover:border-[#1B4D3E] flex items-center justify-center text-gray-700 group-hover:text-[#1B4D3E] mb-2 rounded-lg transition">
                 <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
@@ -206,7 +205,7 @@
         </div>
     </section>
 
-    <!-- 8. Banner Informativo de Idiomas Disponibles -->
+    <!-- 8. Banner Informativo de Idiomas Disponibles (Actualizado con Enlaces Interactivos) -->
     <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 md:p-5 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm">
         <div class="flex items-center gap-3">
             <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-sm">
@@ -214,19 +213,19 @@
             </div>
             <div>
                 <h4 class="text-xs md:text-sm font-bold text-emerald-900">Plataforma Multilingüe Adaptada a tu Región</h4>
-                <p class="text-[11px] md:text-xs text-emerald-700 mt-0.5">Agroshare apoya la identidad cultural integrando soporte para los idiomas locales del país:</p>
+                <p class="text-[11px] md:text-xs text-emerald-700 mt-0.5">Haz clic para cambiar el idioma de la plataforma:</p>
             </div>
         </div>
         <div class="flex items-center gap-2 shrink-0 flex-wrap justify-center">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-emerald-200 text-emerald-800 text-[11px] font-bold shadow-xs">
+            <a href="{{ route('lang.switch', 'es') }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border {{ session('locale', 'es') == 'es' ? 'border-emerald-600 ring-2 ring-emerald-500/20' : 'border-emerald-200' }} text-emerald-800 text-[11px] font-bold shadow-xs hover:bg-emerald-100 transition">
                 🇪🇸 Español
-            </span>
-            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-emerald-200 text-emerald-800 text-[11px] font-bold shadow-xs">
+            </a>
+            <a href="{{ route('lang.switch', 'mi') }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border {{ session('locale') == 'mi' ? 'border-emerald-600 ring-2 ring-emerald-500/20' : 'border-emerald-200' }} text-emerald-800 text-[11px] font-bold shadow-xs hover:bg-emerald-100 transition">
                 🌿 Miskito
-            </span>
-            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-emerald-200 text-emerald-800 text-[11px] font-bold shadow-xs">
+            </a>
+            <a href="{{ route('lang.switch', 'cr') }}" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border {{ session('locale') == 'cr' ? 'border-emerald-600 ring-2 ring-emerald-500/20' : 'border-emerald-200' }} text-emerald-800 text-[11px] font-bold shadow-xs hover:bg-emerald-100 transition">
                 🌊 Creole
-            </span>
+            </a>
         </div>
     </div>
 

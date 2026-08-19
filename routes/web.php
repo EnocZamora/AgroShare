@@ -7,6 +7,20 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+app()->setLocale(session('locale', 'es'));
+
+/*
+|--------------------------------------------------------------------------
+| Rutas de Idioma (NUEVO)
+|--------------------------------------------------------------------------
+*/
+Route::get('lang/{lang}', function ($lang) {
+    if (in_array($lang, ['es', 'mi', 'cr'])) {
+        session(['locale' => $lang]);
+    }
+    return back();
+})->name('lang.switch');
+
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +37,6 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('auth.login.store');
 
 Route::get('/register', [AuthController::class, 'showRegister'])->name('auth.register');
-// Ajuste: nombramos la ruta de POST exactamente como probablemente la busca tu vista
 Route::post('/register', [AuthController::class, 'register'])->name('auth.register.store');
 
 
