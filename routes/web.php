@@ -56,6 +56,12 @@ Route::middleware(['auth'])->group(function () {
     // Módulo de Métodos de Pago
     Route::get('/pagos/metodos', [PaymentController::class, 'index'])->name('payments.methods');
     Route::post('/pagos/metodos', [PaymentController::class, 'store'])->name('payments.store');
+    
+    // chat archivados
+    Route::patch('/chats/{chat}/archive', [ChatController::class, 'toggleArchive'])->name('chats.archive');
+
+    // Estado producto
+    Route::patch('/products/{product}/status', [ProductController::class, 'updateStatus'])->name('products.update-status');
 
     // Panel de Administración
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
