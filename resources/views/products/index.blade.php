@@ -5,55 +5,69 @@
 @section('content')
 <div class="container mx-auto px-4 py-4 max-w-5xl space-y-6 md:space-y-8">
     
-    <!-- 1. Cabecera Específica para Móvil (Oculta en escritorio para evitar duplicar el Header del Layout) -->
+    <!-- 1. Cabecera Específica para Móvil (Oculta en escritorio) -->
     <div class="flex justify-between items-center md:hidden">
         <!-- Logo Agroshare Local -->
         <div class="w-16 shrink-0">
             <img src="{{ asset('images/logo.png') }}" alt="Agroshare Logo" class="w-full h-auto object-contain">
         </div>
         
-        <!-- Ubicación y Perfil Móvil -->
+        <!-- Ubicación y Perfil Móvil (Usando route('profile.show')) -->
         <a href="{{ route('profile.show') }}" class="flex flex-col items-end gap-1">
             <span class="flex items-center gap-1 text-[10px] font-bold text-gray-800">
-                <svg class="w-3 h-3 text-gray-800" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
-                Matagalpa, Nicaragua
+                <svg class="w-3 h-3 text-[#1B4D3E]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
+                {{ Auth::user()->department ?? 'Matagalpa' }}, Nicaragua
             </span>
-            <div class="w-10 h-10 rounded-full overflow-hidden border border-gray-200 bg-gray-100 shrink-0">
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" alt="Avatar" class="w-full h-full object-cover">
+            <div class="w-10 h-10 rounded-full overflow-hidden border border-emerald-600 bg-emerald-100 flex items-center justify-center shrink-0">
+                @if(Auth::user()->profile_photo)
+                    <img src="{{ asset('storage/' . Auth::user()->profile_photo) }}" alt="{{ Auth::user()->name }}" class="w-full h-full object-cover">
+                @else
+                    <span class="text-xs font-bold text-emerald-800">{{ strtoupper(substr(Auth::user()->name, 0, 2)) }}</span>
+                @endif
             </div>
         </a>
     </div>
 
-    <!-- Bienvenida exclusiva para Escritorio (aprovecha el espacio superior de forma limpia) -->
+    <!-- Bienvenida exclusiva para Escritorio -->
     <div class="hidden md:flex justify-between items-center bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
-        <div>
-            <h1 class="text-2xl font-bold text-[#1B4D3E]">Bienvenido a Agroshare</h1>
-            <p class="text-sm text-gray-600 mt-1">Conectando directamente el campo nicaragüense con nuevos compradores.</p>
+        <div class="flex items-center gap-4">
+            <div class="w-14 h-14 rounded-full overflow-hidden border-2 border-emerald-600 bg-emerald-100 flex items-center justify-center shrink-0">
+                @if(Auth::user()->profile_photo)
+                    <img src="{{ asset('storage/' . Auth::user()->profile_photo) }}" alt="{{ Auth::user()->name }}" class="w-full h-full object-cover">
+                @else
+                    <span class="text-lg font-bold text-emerald-800">{{ strtoupper(substr(Auth::user()->name, 0, 2)) }}</span>
+                @endif
+            </div>
+            <div>
+                <h1 class="text-2xl font-bold text-[#1B4D3E]">¡Bienvenido, {{ Auth::user()->name }}!</h1>
+                <p class="text-sm text-gray-600 mt-0.5">Conectando directamente el campo nicaragüense con nuevos compradores.</p>
+            </div>
         </div>
-        <div class="flex items-center gap-3 bg-gray-50 border border-gray-200 px-4 py-2 rounded-xl">
+        <div class="flex items-center gap-3 bg-gray-50 border border-gray-200 px-4 py-2.5 rounded-xl">
             <svg class="w-5 h-5 text-[#1B4D3E]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
-            <span class="text-sm font-bold text-gray-800">Matagalpa, Nicaragua</span>
+            <span class="text-sm font-bold text-gray-800">{{ Auth::user()->department ?? 'Matagalpa' }}, Nicaragua</span>
         </div>
     </div>
 
     <!-- 2. Barra de Accesos Rápidos -->
     <div class="grid grid-cols-3 gap-3 md:gap-4 max-w-2xl mx-auto">
-        <a href="{{ route('products.my-products') }}" class="border border-gray-200 hover:border-[#1B4D3E] rounded-xl p-3 flex flex-col items-center justify-center text-center shadow-sm transition bg-white">
-            <div class="w-10 h-10 md:w-12 md:h-12 border border-gray-200 flex items-center justify-center text-gray-700 mb-2 rounded-lg">
+        <a href="{{ route('products.my-products') }}" class="border border-gray-200 hover:border-[#1B4D3E] rounded-xl p-3 flex flex-col items-center justify-center text-center shadow-sm transition bg-white group">
+            <div class="w-10 h-10 md:w-12 md:h-12 border border-gray-200 group-hover:border-[#1B4D3E] flex items-center justify-center text-gray-700 group-hover:text-[#1B4D3E] mb-2 rounded-lg transition">
                 <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
             </div>
             <span class="text-[10px] md:text-xs font-semibold text-gray-700 leading-tight">Mis<br>publicaciones</span>
         </a>
         
-        <a href="{{ route('profile.show') }}" class="border border-gray-200 hover:border-[#1B4D3E] rounded-xl p-3 flex flex-col items-center justify-center text-center shadow-sm transition bg-white">
-            <div class="w-10 h-10 md:w-12 md:h-12 border border-gray-200 flex items-center justify-center text-gray-700 mb-2 rounded-lg">
+        <!-- Usando route('profile.show') en lugar de profile.edit -->
+        <a href="{{ route('profile.show') }}" class="border border-gray-200 hover:border-[#1B4D3E] rounded-xl p-3 flex flex-col items-center justify-center text-center shadow-sm transition bg-white group">
+            <div class="w-10 h-10 md:w-12 md:h-12 border border-gray-200 group-hover:border-[#1B4D3E] flex items-center justify-center text-gray-700 group-hover:text-[#1B4D3E] mb-2 rounded-lg transition">
                 <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
             </div>
             <span class="text-[10px] md:text-xs font-semibold text-gray-700 leading-tight">Configuración</span>
         </a>
 
-        <a href="{{ route('chats.index') }}" class="border border-gray-200 hover:border-[#1B4D3E] rounded-xl p-3 flex flex-col items-center justify-center text-center shadow-sm transition bg-white">
-            <div class="w-10 h-10 md:w-12 md:h-12 border border-gray-200 flex items-center justify-center text-gray-700 mb-2 rounded-lg">
+        <a href="{{ route('chats.index') }}" class="border border-gray-200 hover:border-[#1B4D3E] rounded-xl p-3 flex flex-col items-center justify-center text-center shadow-sm transition bg-white group">
+            <div class="w-10 h-10 md:w-12 md:h-12 border border-gray-200 group-hover:border-[#1B4D3E] flex items-center justify-center text-gray-700 group-hover:text-[#1B4D3E] mb-2 rounded-lg transition">
                 <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
             </div>
             <span class="text-[10px] md:text-xs font-semibold text-gray-700 leading-tight">Mensajes</span>
@@ -137,43 +151,84 @@
     <!-- 7. Zonas productivas -->
     <section>
         <div class="flex justify-between items-center mb-3 md:mb-4">
-            <h3 class="font-bold text-xs md:text-base text-gray-900">Zonas productivas</h3>
-            <a href="#" class="text-[10px] md:text-xs text-[#1B4D3E] font-bold hover:underline">Ver más</a>
+            <h3 class="font-bold text-xs md:text-base text-gray-900">Zonas productivas de Nicaragua</h3>
+            <span class="text-[10px] md:text-xs text-[#1B4D3E] font-bold">Desliza para ver más &rarr;</span>
         </div>
-        <!-- Scroll horizontal en móvil, Grid en escritorio -->
-        <div class="flex md:grid md:grid-cols-5 gap-2 md:gap-4 overflow-x-auto pb-2 md:pb-0 scrollbar-none snap-x">
-            <div class="relative rounded-xl overflow-hidden shrink-0 w-20 h-24 md:w-full md:h-32 shadow-sm border border-gray-200 snap-start">
-                <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=300&fit=crop" class="w-full h-full object-cover">
-                <div class="absolute inset-x-0 bottom-0 bg-white/90 p-1 md:p-2 text-center">
-                    <span class="text-[9px] md:text-xs font-bold text-gray-900">Estelí</span>
+        <div class="flex gap-3 overflow-x-auto pb-3 scrollbar-none snap-x">
+            <div class="relative rounded-xl overflow-hidden shrink-0 w-28 h-32 md:w-36 md:h-40 shadow-sm border border-gray-200 snap-start group">
+                <img src="https://images.unsplash.com/photo-1516253593875-bd7ba052fbc5?w=400&fit=crop" alt="Matagalpa" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-2 text-center">
+                    <span class="text-[11px] md:text-xs font-bold text-white drop-shadow">Matagalpa</span>
                 </div>
             </div>
-            <div class="relative rounded-xl overflow-hidden shrink-0 w-20 h-24 md:w-full md:h-32 shadow-sm border border-gray-200 snap-start">
-                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=300&fit=crop" class="w-full h-full object-cover">
-                <div class="absolute inset-x-0 bottom-0 bg-white/90 p-1 md:p-2 text-center">
-                    <span class="text-[9px] md:text-xs font-bold text-gray-900">Matagalpa</span>
+            <div class="relative rounded-xl overflow-hidden shrink-0 w-28 h-32 md:w-36 md:h-40 shadow-sm border border-gray-200 snap-start group">
+                <img src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=400&fit=crop" alt="Jinotega" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-2 text-center">
+                    <span class="text-[11px] md:text-xs font-bold text-white drop-shadow">Jinotega</span>
                 </div>
             </div>
-            <div class="relative rounded-xl overflow-hidden shrink-0 w-20 h-24 md:w-full md:h-32 shadow-sm border border-gray-200 snap-start">
-                <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=300&fit=crop" class="w-full h-full object-cover">
-                <div class="absolute inset-x-0 bottom-0 bg-white/90 p-1 md:p-2 text-center">
-                    <span class="text-[9px] md:text-xs font-bold text-gray-900">Jinotega</span>
+            <div class="relative rounded-xl overflow-hidden shrink-0 w-28 h-32 md:w-36 md:h-40 shadow-sm border border-gray-200 snap-start group">
+                <img src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?w=400&fit=crop" alt="Estelí" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-2 text-center">
+                    <span class="text-[11px] md:text-xs font-bold text-white drop-shadow">Estelí</span>
                 </div>
             </div>
-            <div class="relative rounded-xl overflow-hidden shrink-0 w-20 h-24 md:w-full md:h-32 shadow-sm border border-gray-200 snap-start">
-                <img src="https://images.unsplash.com/photo-1444084316824-dc26d6657664?w=300&fit=crop" class="w-full h-full object-cover">
-                <div class="absolute inset-x-0 bottom-0 bg-white/90 p-1 md:p-2 text-center">
-                    <span class="text-[9px] md:text-xs font-bold text-gray-900">Bluefields</span>
+            <div class="relative rounded-xl overflow-hidden shrink-0 w-28 h-32 md:w-36 md:h-40 shadow-sm border border-gray-200 snap-start group">
+                <img src="https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=400&fit=crop" alt="Masaya" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-2 text-center">
+                    <span class="text-[11px] md:text-xs font-bold text-white drop-shadow">Masaya</span>
                 </div>
             </div>
-            <div class="relative rounded-xl overflow-hidden shrink-0 w-20 h-24 md:w-full md:h-32 shadow-sm border border-gray-200 snap-start">
-                <img src="https://images.unsplash.com/photo-1542314831-c6a4d14eff4c?w=300&fit=crop" class="w-full h-full object-cover">
-                <div class="absolute inset-x-0 bottom-0 bg-white/90 p-1 md:p-2 text-center">
-                    <span class="text-[9px] md:text-xs font-bold text-gray-900">Masaya</span>
+            <div class="relative rounded-xl overflow-hidden shrink-0 w-28 h-32 md:w-36 md:h-40 shadow-sm border border-gray-200 snap-start group">
+                <img src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=400&fit=crop" alt="Rivas" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-2 text-center">
+                    <span class="text-[11px] md:text-xs font-bold text-white drop-shadow">Rivas</span>
+                </div>
+            </div>
+            <div class="relative rounded-xl overflow-hidden shrink-0 w-28 h-32 md:w-36 md:h-40 shadow-sm border border-gray-200 snap-start group">
+                <img src="https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?w=400&fit=crop" alt="Boaco" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-2 text-center">
+                    <span class="text-[11px] md:text-xs font-bold text-white drop-shadow">Boaco</span>
+                </div>
+            </div>
+            <div class="relative rounded-xl overflow-hidden shrink-0 w-28 h-32 md:w-36 md:h-40 shadow-sm border border-gray-200 snap-start group">
+                <img src="https://images.unsplash.com/photo-1444084316824-dc26d6657664?w=400&fit=crop" alt="Bluefields" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-2 text-center">
+                    <span class="text-[11px] md:text-xs font-bold text-white drop-shadow">Bluefields</span>
+                </div>
+            </div>
+            <div class="relative rounded-xl overflow-hidden shrink-0 w-28 h-32 md:w-36 md:h-40 shadow-sm border border-gray-200 snap-start group">
+                <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400&fit=crop" alt="León" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                <div class="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-2 text-center">
+                    <span class="text-[11px] md:text-xs font-bold text-white drop-shadow">León</span>
                 </div>
             </div>
         </div>
     </section>
+
+    <!-- 8. Banner Informativo de Idiomas Disponibles -->
+    <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 md:p-5 flex flex-col md:flex-row items-center justify-between gap-4 shadow-sm">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 shadow-sm">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
+            </div>
+            <div>
+                <h4 class="text-xs md:text-sm font-bold text-emerald-900">Plataforma Multilingüe Adaptada a tu Región</h4>
+                <p class="text-[11px] md:text-xs text-emerald-700 mt-0.5">Agroshare apoya la identidad cultural integrando soporte para los idiomas locales del país:</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2 shrink-0 flex-wrap justify-center">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-emerald-200 text-emerald-800 text-[11px] font-bold shadow-xs">
+                🇪🇸 Español
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-emerald-200 text-emerald-800 text-[11px] font-bold shadow-xs">
+                🌿 Miskito
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white border border-emerald-200 text-emerald-800 text-[11px] font-bold shadow-xs">
+                🌊 Creole
+            </span>
+        </div>
+    </div>
 
 </div>
 @endsection
