@@ -49,8 +49,9 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/chats', [ChatController::class, 'store'])->name('chats.store');
     Route::get('/chats/{chat}', [ChatController::class, 'show'])->name('chats.show');
 
-    // Módulo de Perfil de Usuario
+    // Módulo de Perfil de Usuario (Soporta /perfil y /profile)
     Route::get('/perfil', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile', [ProfileController::class, 'show']); 
     Route::put('/perfil', [ProfileController::class, 'update'])->name('profile.update');
 
     // Módulo de Métodos de Pago
