@@ -5,26 +5,38 @@
 @section('content')
 <div class="container mx-auto px-4 py-4 max-w-5xl space-y-6 md:space-y-8">
     
-    <!-- Cabecera Específica de la Vista (Fiel al prototipo móvil con logo local) -->
-    <div class="flex justify-between items-center md:justify-center md:gap-16">
+    <!-- 1. Cabecera Específica para Móvil (Oculta en escritorio para evitar duplicar el Header del Layout) -->
+    <div class="flex justify-between items-center md:hidden">
         <!-- Logo Agroshare Local -->
-        <div class="w-16 md:w-20 shrink-0">
+        <div class="w-16 shrink-0">
             <img src="{{ asset('images/logo.png') }}" alt="Agroshare Logo" class="w-full h-auto object-contain">
         </div>
         
-        <!-- Ubicación y Perfil -->
-        <a href="{{ route('profile.show') }}" class="flex flex-col md:flex-row items-end md:items-center gap-1 md:gap-3">
-            <span class="flex items-center gap-1 text-[10px] md:text-sm font-bold text-gray-800">
-                <svg class="w-3 h-3 md:w-4 md:h-4 text-gray-800" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
+        <!-- Ubicación y Perfil Móvil -->
+        <a href="{{ route('profile.show') }}" class="flex flex-col items-end gap-1">
+            <span class="flex items-center gap-1 text-[10px] font-bold text-gray-800">
+                <svg class="w-3 h-3 text-gray-800" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
                 Matagalpa, Nicaragua
             </span>
-            <div class="w-10 h-10 md:w-12 md:h-12 rounded-full overflow-hidden border border-gray-200 bg-gray-100 shrink-0">
+            <div class="w-10 h-10 rounded-full overflow-hidden border border-gray-200 bg-gray-100 shrink-0">
                 <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop" alt="Avatar" class="w-full h-full object-cover">
             </div>
         </a>
     </div>
 
-    <!-- Barra de Accesos Rápidos -->
+    <!-- Bienvenida exclusiva para Escritorio (aprovecha el espacio superior de forma limpia) -->
+    <div class="hidden md:flex justify-between items-center bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
+        <div>
+            <h1 class="text-2xl font-bold text-[#1B4D3E]">Bienvenido a Agroshare</h1>
+            <p class="text-sm text-gray-600 mt-1">Conectando directamente el campo nicaragüense con nuevos compradores.</p>
+        </div>
+        <div class="flex items-center gap-3 bg-gray-50 border border-gray-200 px-4 py-2 rounded-xl">
+            <svg class="w-5 h-5 text-[#1B4D3E]" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>
+            <span class="text-sm font-bold text-gray-800">Matagalpa, Nicaragua</span>
+        </div>
+    </div>
+
+    <!-- 2. Barra de Accesos Rápidos -->
     <div class="grid grid-cols-3 gap-3 md:gap-4 max-w-2xl mx-auto">
         <a href="{{ route('products.my-products') }}" class="border border-gray-200 hover:border-[#1B4D3E] rounded-xl p-3 flex flex-col items-center justify-center text-center shadow-sm transition bg-white">
             <div class="w-10 h-10 md:w-12 md:h-12 border border-gray-200 flex items-center justify-center text-gray-700 mb-2 rounded-lg">
@@ -48,7 +60,7 @@
         </a>
     </div>
 
-    <!-- Banner Institucional -->
+    <!-- 3. Banner Institucional -->
     <div class="relative rounded-xl overflow-hidden bg-[#1B4D3E] text-white flex items-center h-28 md:h-36 shadow-sm">
         <div class="z-10 w-3/5 p-4 md:p-8">
             <h2 class="text-[13px] md:text-xl font-bold leading-tight">Conecta con productores agrícolas de Nicaragua</h2>
@@ -59,7 +71,7 @@
         </div>
     </div>
 
-    <!-- Categorías destacadas -->
+    <!-- 4. Categorías destacadas -->
     <section>
         <h3 class="font-bold text-xs md:text-base text-gray-900 mb-3 md:mb-4">Categorías destacadas de Agroshare</h3>
         <div class="grid grid-cols-4 md:flex md:justify-center gap-2 md:gap-6">
@@ -82,7 +94,7 @@
         </div>
     </section>
 
-    <!-- Productos destacados -->
+    <!-- 5. Productos destacados -->
     <section>
         <h3 class="font-bold text-xs md:text-base text-gray-900 mb-3 md:mb-4">Productos destacados</h3>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
@@ -111,7 +123,7 @@
         </div>
     </section>
 
-    <!-- Llamado a la acción -->
+    <!-- 6. Llamado a la acción -->
     <div class="border border-[#1B4D3E]/30 rounded-xl p-4 md:p-6 flex justify-between items-center bg-white shadow-sm gap-2">
         <div class="w-2/3 md:w-3/4">
             <h4 class="font-bold text-[11px] md:text-lg text-[#1B4D3E]">¿Eres productor?</h4>
@@ -122,7 +134,7 @@
         </a>
     </div>
 
-    <!-- Zonas productivas -->
+    <!-- 7. Zonas productivas -->
     <section>
         <div class="flex justify-between items-center mb-3 md:mb-4">
             <h3 class="font-bold text-xs md:text-base text-gray-900">Zonas productivas</h3>
