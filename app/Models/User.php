@@ -6,6 +6,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -49,33 +50,27 @@ class User extends Authenticatable
         return $this->rol_sistema === 'USUARIO';
     }
 
-    public function paymentMethods()
+    public function paymentMethods(): HasMany
     {
         return $this->hasMany(PaymentMethod::class);
     }
 
-    public function profileChanges()
+    public function profileChanges(): HasMany
     {
         return $this->hasMany(ProfileChange::class);
     }
 
-    public function chatsAsBuyer()
+    public function chatsAsBuyer(): HasMany
     {
         return $this->hasMany(Chat::class, 'buyer_id');
     }
 
-    public function chatsAsSeller()
+    public function chatsAsSeller(): HasMany
     {
         return $this->hasMany(Chat::class, 'seller_id');
     }
 
-    public function chats()
-    {
-        return Chat::where('buyer_id', $this->id)
-            ->orWhere('seller_id', $this->id);
-    }
-
-    public function products()
+    public function products(): HasMany
     {
         return $this->hasMany(Product::class);
     }

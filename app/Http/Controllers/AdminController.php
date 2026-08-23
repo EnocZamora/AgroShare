@@ -18,7 +18,7 @@ class AdminController extends Controller
         $totalChats = Chat::count();
         $totalMessages = Message::count();
         
-        $recentUsers = User::withCount(['products', 'chats'])
+        $recentUsers = User::withCount('products')
             ->latest()
             ->take(10)
             ->get();
@@ -55,7 +55,7 @@ class AdminController extends Controller
 
         $users = match ($tab) {
             'users' => User::query()
-                ->withCount(['products', 'chats'])
+                ->withCount('products')
                 ->latest()
                 ->paginate($perPage, ['*'], 'users_page')
                 ->withQueryString(),
