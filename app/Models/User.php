@@ -58,4 +58,25 @@ class User extends Authenticatable
     {
         return $this->hasMany(ProfileChange::class);
     }
+
+    public function chatsAsBuyer()
+    {
+        return $this->hasMany(Chat::class, 'buyer_id');
+    }
+
+    public function chatsAsSeller()
+    {
+        return $this->hasMany(Chat::class, 'seller_id');
+    }
+
+    public function chats()
+    {
+        return Chat::where('buyer_id', $this->id)
+            ->orWhere('seller_id', $this->id);
+    }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

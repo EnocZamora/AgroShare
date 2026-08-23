@@ -8,15 +8,23 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SetLocale
 {
+    /**
+     * Idiomas soportados por la plataforma AgroShare.
+     */
+    protected array $supportedLocales = ['es', 'mi', 'cr'];
+
     public function handle(Request $request, Closure $next): Response
     {
-        $locale = session('locale', config('app.locale', 'es'));
-        
-        // Guardar en sesión si no existe para que el modal no se muestre de nuevo
-        if (!session()->has('locale')) {
-            session(['locale' => $locale]);
+        $sessionLocale = $request->session()->get('locale');
+
+        $locale = in_array($sessionLocale, $this->supportedLocales, true)
+            ? $sessionLocale
+            : config('app.locale', 'es');
+
+        if (!$request->session()->has('locale') || !in_array($request->session()->get('locale'), $this->supportedLocales, true)) {
+            $request->session()->put('locale', $locale);
         }
-        
+
         app()->setLocale($locale);
 
         return $next($request);

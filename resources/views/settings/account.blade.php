@@ -5,18 +5,37 @@
 @section('content')
 <div class="max-w-md mx-auto space-y-5 pb-24 px-4 pt-2 bg-[#EAF5ED] min-h-screen">
     
-    <!-- Encabezado superior con botón de retroceso -->
-    <div class="flex items-center gap-3 py-2">
-        <a href="{{ route('settings.index') }}" class="text-[#1B4D3E] hover:opacity-80">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-        </a>
-        <h1 class="text-xl font-bold text-[#1B4D3E] tracking-tight">{{ __('messages.account_title') }}</h1>
+    <!-- Encabezado superior con botón de retroceso y selector de idioma -->
+    <div class="flex items-center justify-between py-2">
+        <div class="flex items-center gap-3">
+            <a href="{{ route('settings.index') }}" class="text-[#1B4D3E] hover:opacity-80">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            </a>
+            <h1 class="text-xl font-bold text-[#1B4D3E] tracking-tight">{{ __('messages.account_title') }}</h1>
+        </div>
+        <div class="flex items-center gap-2">
+            <form action="{{ route('lang.switch', 'es') }}" method="GET" class="inline">
+                <button type="submit" class="px-3 py-1.5 text-xs font-medium rounded-lg border {{ session('locale', 'es') === 'es' ? 'bg-emerald-100 border-emerald-300 text-emerald-800' : 'bg-white border-gray-200 text-gray-600 hover:border-emerald-300' }} transition">
+                    ES
+                </button>
+            </form>
+            <form action="{{ route('lang.switch', 'mi') }}" method="GET" class="inline">
+                <button type="submit" class="px-3 py-1.5 text-xs font-medium rounded-lg border {{ session('locale') === 'mi' ? 'bg-emerald-100 border-emerald-300 text-emerald-800' : 'bg-white border-gray-200 text-gray-600 hover:border-emerald-300' }} transition">
+                    MI
+                </button>
+            </form>
+            <form action="{{ route('lang.switch', 'cr') }}" method="GET" class="inline">
+                <button type="submit" class="px-3 py-1.5 text-xs font-medium rounded-lg border {{ session('locale') === 'cr' ? 'bg-emerald-100 border-emerald-300 text-emerald-800' : 'bg-white border-gray-200 text-gray-600 hover:border-emerald-300' }} transition">
+                    CR
+                </button>
+            </form>
+        </div>
     </div>
 
     <!-- Tarjeta Informativa Superior -->
     <div class="bg-white border border-emerald-900/10 p-3.5 rounded-2xl shadow-sm flex items-center gap-3">
         <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center shrink-0 border border-emerald-700/20 p-1">
-            <span class="text-xs font-black text-[#1B4D3E]">🌱</span>
+            <svg class="w-5 h-5 text-emerald-700" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 2a6 6 0 110 12 6 6 0 010-12z"/></svg>
         </div>
         <div>
             <h3 class="text-xs font-bold text-gray-900">{{ __('messages.account_info_title') }}</h3>

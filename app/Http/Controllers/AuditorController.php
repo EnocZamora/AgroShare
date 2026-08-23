@@ -8,9 +8,8 @@ use App\Models\Chat;
 use App\Models\Message;
 use Illuminate\Http\Request;
 
-class AdminController extends Controller
+class AuditorController extends Controller
 {
-    // Panel general para Admin / Auditor
     public function index()
     {
         $totalUsers = User::count();
@@ -21,15 +20,6 @@ class AdminController extends Controller
         $recentUsers = User::latest()->take(5)->get();
         $recentProducts = Product::with('user')->latest()->take(5)->get();
 
-        return view('admin.index', compact('totalUsers', 'totalProducts', 'totalChats', 'totalMessages', 'recentUsers', 'recentProducts'));
-    }
-
-    // Vista de Auditoría Específica: Listado completo para revisión de registros
-    public function auditLogs(Request $request)
-    {
-        $users = User::withCount(['products'])->latest()->get();
-        $products = Product::with('user', 'category')->latest()->get();
-
-        return view('admin.audit', compact('users', 'products'));
+        return view('auditor.index', compact('totalUsers', 'totalProducts', 'totalChats', 'totalMessages', 'recentUsers', 'recentProducts'));
     }
 }

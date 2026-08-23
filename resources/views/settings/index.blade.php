@@ -5,17 +5,36 @@
 @section('content')
 <div class="max-w-md mx-auto space-y-5 pb-24 px-4 pt-2">
     
-    <!-- Encabezado -->
-    <div class="flex items-center gap-3 bg-white p-4 rounded-2xl shadow-sm border border-emerald-900/10">
-        <div class="w-12 h-12 bg-emerald-100 text-[#1B4D3E] rounded-xl flex items-center justify-center shrink-0">
-            <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-            </svg>
+    <!-- Encabezado con selector de idioma -->
+    <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-3 bg-white p-4 rounded-2xl shadow-sm border border-emerald-900/10 flex-1">
+            <div class="w-12 h-12 bg-emerald-100 text-[#1B4D3E] rounded-xl flex items-center justify-center shrink-0">
+                <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+            </div>
+            <div>
+                <h1 class="text-xl font-bold text-gray-900 tracking-tight">{{ __('messages.settings_title') }}</h1>
+                <p class="text-xs font-bold text-[#1B4D3E]">{{ __('messages.settings_subtitle') }}</p>
+            </div>
         </div>
-        <div>
-            <h1 class="text-xl font-bold text-gray-900 tracking-tight">{{ __('messages.settings_title') }}</h1>
-            <p class="text-xs font-bold text-[#1B4D3E]">{{ __('messages.settings_subtitle') }}</p>
+        <div class="flex items-center gap-2">
+            <form action="{{ route('lang.switch', 'es') }}" method="GET" class="inline">
+                <button type="submit" class="px-3 py-1.5 text-xs font-medium rounded-lg border {{ session('locale', 'es') === 'es' ? 'bg-emerald-100 border-emerald-300 text-emerald-800' : 'bg-white border-gray-200 text-gray-600 hover:border-emerald-300' }} transition">
+                    ES
+                </button>
+            </form>
+            <form action="{{ route('lang.switch', 'mi') }}" method="GET" class="inline">
+                <button type="submit" class="px-3 py-1.5 text-xs font-medium rounded-lg border {{ session('locale') === 'mi' ? 'bg-emerald-100 border-emerald-300 text-emerald-800' : 'bg-white border-gray-200 text-gray-600 hover:border-emerald-300' }} transition">
+                    MI
+                </button>
+            </form>
+            <form action="{{ route('lang.switch', 'cr') }}" method="GET" class="inline">
+                <button type="submit" class="px-3 py-1.5 text-xs font-medium rounded-lg border {{ session('locale') === 'cr' ? 'bg-emerald-100 border-emerald-300 text-emerald-800' : 'bg-white border-gray-200 text-gray-600 hover:border-emerald-300' }} transition">
+                    CR
+                </button>
+            </form>
         </div>
     </div>
 
@@ -51,7 +70,7 @@
         </div>
 
         <!-- Métodos de pago -->
-        <div class="flex items-center justify-between bg-white p-4 rounded-2xl shadow-sm border border-emerald-900/10">
+        <a href="{{ route('payments.methods') }}" class="flex items-center justify-between bg-white p-4 rounded-2xl shadow-sm border border-emerald-900/10 hover:border-emerald-700/40 transition">
             <div class="flex items-center gap-3.5">
                 <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center text-gray-700 shrink-0">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
@@ -62,7 +81,7 @@
                 </div>
             </div>
             <svg class="w-5 h-5 text-emerald-700 shrink-0" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-        </div>
+        </a>
 
         <!-- Centro de ayuda -->
         <div class="flex items-center justify-between bg-white p-4 rounded-2xl shadow-sm border border-emerald-900/10">

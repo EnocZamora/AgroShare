@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,15 +9,32 @@
 <body class="bg-slate-50 min-h-screen flex items-center justify-center p-4 py-8">
     <div class="w-full max-w-2xl bg-white rounded-2xl shadow-xl border border-slate-100 p-8 space-y-6">
         
-        <!-- Encabezado -->
+        <!-- Encabezado con selector de idioma -->
         <div class="flex items-center justify-between border-b border-slate-100 pb-4">
             <div>
                 <h1 class="text-2xl font-extrabold text-emerald-800 tracking-tight">{{ __('messages.profile_title') }}</h1>
                 <p class="text-sm text-slate-500">{{ __('messages.profile_subtitle') }}</p>
             </div>
-            <a href="{{ route('products.index') }}" class="text-sm font-semibold text-emerald-600 hover:underline">
-                ← {{ __('messages.profile_back_catalog') }}
-            </a>
+            <div class="flex items-center gap-2">
+                <a href="{{ route('products.index') }}" class="text-sm font-semibold text-emerald-600 hover:underline flex items-center gap-1">
+                    ← {{ __('messages.profile_back_catalog') }}
+                </a>
+                <form action="{{ route('lang.switch', 'es') }}" method="GET" class="inline">
+                    <button type="submit" class="px-3 py-1.5 text-xs font-medium rounded-lg border {{ session('locale', 'es') === 'es' ? 'bg-emerald-100 border-emerald-300 text-emerald-800' : 'bg-white border-gray-200 text-gray-600 hover:border-emerald-300' }} transition">
+                        ES
+                    </button>
+                </form>
+                <form action="{{ route('lang.switch', 'mi') }}" method="GET" class="inline">
+                    <button type="submit" class="px-3 py-1.5 text-xs font-medium rounded-lg border {{ session('locale') === 'mi' ? 'bg-emerald-100 border-emerald-300 text-emerald-800' : 'bg-white border-gray-200 text-gray-600 hover:border-emerald-300' }} transition">
+                        MI
+                    </button>
+                </form>
+                <form action="{{ route('lang.switch', 'cr') }}" method="GET" class="inline">
+                    <button type="submit" class="px-3 py-1.5 text-xs font-medium rounded-lg border {{ session('locale') === 'cr' ? 'bg-emerald-100 border-emerald-300 text-emerald-800' : 'bg-white border-gray-200 text-gray-600 hover:border-emerald-300' }} transition">
+                        CR
+                    </button>
+                </form>
+            </div>
         </div>
 
         @if (session('success'))
@@ -33,13 +50,11 @@
             <!-- Sección de Avatar con Previsualización -->
             <div class="flex flex-col sm:flex-row items-center gap-5 p-4 bg-slate-50 border border-slate-200 rounded-2xl">
                 <div class="relative w-24 h-24 rounded-full overflow-hidden border-2 border-emerald-600 shrink-0 bg-emerald-100 flex items-center justify-center">
-                    <!-- Imagen de Previsualización / Existente -->
                     <img id="avatar-preview" 
                          src="{{ $user->profile_photo ? asset('storage/' . $user->profile_photo) : '' }}" 
                          alt="{{ $user->name }}" 
                          class="w-full h-full object-cover {{ $user->profile_photo ? '' : 'hidden' }}">
 
-                    <!-- Iniciales (Si no hay foto) -->
                     <span id="avatar-placeholder" 
                           class="text-3xl font-bold text-emerald-800 {{ $user->profile_photo ? 'hidden' : '' }}">
                         {{ strtoupper(substr($user->name, 0, 2)) }}
@@ -48,7 +63,7 @@
 
                 <div class="w-full space-y-1">
                     <label for="profile_photo" class="block text-sm font-semibold text-slate-700">{{ __('messages.profile_avatar_label') }}</label>
-                    <input type="file" name="profile_photo" id="profile_photo" accept="image/*"
+                    <input type="file" name="profile_photo" id="profile_photo" accept="image/*" autocomplete="off"
                         class="block w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-emerald-600 file:text-white hover:file:bg-emerald-700 cursor-pointer">
                     <p class="text-[11px] text-slate-400">{{ __('messages.profile_avatar_help') }}</p>
                     @error('profile_photo')
@@ -60,20 +75,20 @@
             <!-- Datos Personales -->
             <div>
                 <label for="name" class="block text-sm font-semibold text-slate-700 mb-1">{{ __('messages.profile_name_label') }}</label>
-                <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" required
+                <input type="text" name="name" id="name" value="{{ old('name', $user->name) }}" required autocomplete="name"
                     class="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
             </div>
 
             <div>
                 <label class="block text-sm font-semibold text-slate-500 mb-1">{{ __('messages.profile_email_label') }}</label>
-                <input type="email" value="{{ $user->email }}" disabled
+                <input type="email" value="{{ $user->email }}" disabled autocomplete="email"
                     class="w-full px-4 py-2.5 border border-slate-200 rounded-xl text-slate-400 bg-slate-50 text-sm cursor-not-allowed">
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label for="phone" class="block text-sm font-semibold text-slate-700 mb-1">{{ __('messages.profile_phone_label') }}</label>
-                    <input type="text" name="phone" id="phone" value="{{ old('phone', $user->phone) }}" placeholder="{{ __('messages.profile_phone_placeholder') }}"
+                    <input type="tel" name="phone" id="phone" value="{{ old('phone', $user->phone) }}" placeholder="{{ __('messages.profile_phone_placeholder') }}" autocomplete="tel"
                         class="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
                 </div>
                 <div>
@@ -89,12 +104,12 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <label for="department" class="block text-sm font-semibold text-slate-700 mb-1">{{ __('messages.profile_department_label') }}</label>
-                    <input type="text" name="department" id="department" value="{{ old('department', $user->department) }}" placeholder="{{ __('messages.profile_department_placeholder') }}"
+                    <input type="text" name="department" id="department" value="{{ old('department', $user->department) }}" placeholder="{{ __('messages.profile_department_placeholder') }}" autocomplete="address-level1"
                         class="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
                 </div>
                 <div>
                     <label for="municipality" class="block text-sm font-semibold text-slate-700 mb-1">{{ __('messages.profile_municipality_label') }}</label>
-                    <input type="text" name="municipality" id="municipality" value="{{ old('municipality', $user->municipality) }}" placeholder="{{ __('messages.profile_municipality_placeholder') }}"
+                    <input type="text" name="municipality" id="municipality" value="{{ old('municipality', $user->municipality) }}" placeholder="{{ __('messages.profile_municipality_placeholder') }}" autocomplete="address-level2"
                         class="w-full px-4 py-2.5 border border-slate-300 rounded-xl text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500 text-sm">
                 </div>
             </div>
@@ -105,7 +120,6 @@
         </form>
     </div>
 
-    <!-- Script de Previsualización en Tiempo Real -->
     <script>
         document.getElementById('profile_photo').addEventListener('change', function(e) {
             const file = e.target.files[0];
