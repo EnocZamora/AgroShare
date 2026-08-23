@@ -54,6 +54,8 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'unit' => 'required|string|max:50',
             'stock' => 'required|integer|min:0',
+            'location' => 'nullable|string|max:100',
+            'availability_date' => 'nullable|date',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -70,6 +72,8 @@ class ProductController extends Controller
             'price' => $request->price,
             'unit' => $request->unit,
             'stock' => $request->stock,
+            'location' => $request->location,
+            'availability_date' => $request->availability_date,
             'status' => 'activo',
             'image' => $imagePath,
         ]);
@@ -109,6 +113,8 @@ class ProductController extends Controller
             'price' => 'required|numeric|min:0',
             'unit' => 'required|string|max:50',
             'stock' => 'required|integer|min:0',
+            'location' => 'nullable|string|max:100',
+            'availability_date' => 'nullable|date',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -128,6 +134,8 @@ class ProductController extends Controller
             'price' => $request->price,
             'unit' => $request->unit,
             'stock' => $request->stock,
+            'location' => $request->location,
+            'availability_date' => $request->availability_date,
             'image' => $imagePath,
         ]);
 

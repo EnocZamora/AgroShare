@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -19,6 +18,7 @@ use Illuminate\Notifications\Notifiable;
     'department', 
     'municipality', 
     'profile_photo',
+    'rol_sistema',
 ])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
@@ -26,11 +26,6 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -38,10 +33,6 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-    // ==========================================
-    // Métodos Helper para Verificación de Roles
-    // ==========================================
 
     public function esAdmin(): bool
     {
@@ -58,21 +49,11 @@ class User extends Authenticatable
         return $this->rol_sistema === 'USUARIO';
     }
 
-    // ==========================================
-    // Relaciones de Eloquent
-    // ==========================================
-
-    /**
-     * Relación: Un usuario puede tener registrados varios métodos de pago.
-     */
     public function paymentMethods()
     {
         return $this->hasMany(PaymentMethod::class);
     }
 
-    /**
-     * Relación: Un usuario puede tener múltiples registros de cambios de perfil.
-     */
     public function profileChanges()
     {
         return $this->hasMany(ProfileChange::class);

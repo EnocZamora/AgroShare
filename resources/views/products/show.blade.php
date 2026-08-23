@@ -9,7 +9,7 @@
     <div>
         <a href="{{ route('products.index') }}" class="inline-flex items-center gap-1 text-xs font-bold text-[#1B4D3E] hover:underline">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-            Volver al catálogo
+            {{ __('messages.product_show_back') }}
         </a>
     </div>
 
@@ -47,7 +47,7 @@
                 
                 <div class="text-xl md:text-2xl font-extrabold text-[#1B4D3E]">
                     ${{ number_format($product->price, 2) }} 
-                    <span class="text-xs font-normal text-gray-500">/ {{ $product->unit }}</span>
+                    <span class="text-xs font-normal text-gray-500">{{ __('messages.product_show_price_unit', ['unit' => $product->unit]) }}</span>
                 </div>
                 
                 <p class="text-xs text-gray-600 leading-relaxed pt-2">
@@ -62,8 +62,8 @@
                         {{ strtoupper(substr($product->user->name ?? 'P', 0, 1)) }}
                     </div>
                     <div>
-                        <p class="text-xs font-bold text-gray-900">{{ $product->user->name ?? 'Productor Local' }}</p>
-                        <p class="text-[10px] text-gray-400">Stock disponible: <span class="font-medium text-gray-700">{{ $product->stock }} {{ $product->unit }}</span></p>
+                        <p class="text-xs font-bold text-gray-900">{{ $product->user->name ?? __('messages.product_show_producer') }}</p>
+                        <p class="text-[10px] text-gray-400">{{ __('messages.product_show_stock', ['stock' => $product->stock, 'unit' => $product->unit]) }}</p>
                     </div>
                 </div>
 
@@ -75,22 +75,21 @@
                             <input type="hidden" name="product_id" value="{{ $product->id }}">
                             <input type="hidden" name="content" value="Hola, estoy interesado en tu producto: {{ $product->title }}">
                             <button type="submit" class="w-full bg-[#1B4D3E] hover:bg-[#14382c] text-white text-xs py-3 rounded-xl font-bold transition text-center shadow-sm tracking-wide">
-                                Contactar al Productor
+                                {{ __('messages.product_show_contact_button') }}
                             </button>
                         </form>
                     @else
                         <div class="bg-emerald-50 border border-emerald-200 text-[#1B4D3E] text-xs p-3 rounded-xl text-center font-medium">
-                            ✓ Este producto fue publicado por ti.
+                            ✓ {{ __('messages.product_show_own_product') }}
                         </div>
                     @endif
                 @else
                     <a href="{{ route('auth.login') }}" class="block w-full bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs py-3 rounded-xl font-bold transition text-center tracking-wide">
-                        Inicia sesión para contactar al productor
+                        {{ __('messages.product_show_login_to_contact') }}
                     </a>
                 @endauth
             </div>
         </div>
-
     </div>
 </div>
 @endsection

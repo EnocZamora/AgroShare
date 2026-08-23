@@ -16,6 +16,8 @@ class Product extends Model
         'price',
         'unit',
         'stock',
+        'location',
+        'availability_date',
         'status'
     ];
 

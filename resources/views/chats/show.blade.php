@@ -19,12 +19,12 @@
             <div class="min-w-0">
                 <h3 class="text-sm font-bold text-gray-900 truncate">{{ $otherUser->name ?? 'Usuario' }}</h3>
                 <p class="text-xs text-emerald-700 font-medium truncate">
-                    <span class="font-normal text-gray-500">Producto:</span> {{ $chat->product->title ?? 'N/D' }}
+                    <span class="font-normal text-gray-500">{{ __('messages.chats_product_interested', ['product' => $chat->product->title ?? 'N/D']) }}</span>
                 </p>
             </div>
         </div>
         <a href="{{ route('chats.index') }}" class="inline-flex items-center gap-1 text-xs text-gray-500 hover:text-[#1B4D3E] font-bold shrink-0 transition">
-            ← Volver
+            ← {{ __('messages.chats_back') }}
         </a>
     </div>
 
@@ -48,7 +48,7 @@
             @empty
                 <div class="flex flex-col items-center justify-center h-full text-center space-y-2">
                     <div class="w-10 h-10 bg-emerald-100 text-[#1B4D3E] rounded-full flex items-center justify-center font-bold text-sm">💬</div>
-                    <p class="text-gray-400 text-xs">No hay mensajes en esta conversación todavía. ¡Escribe el primero!</p>
+                    <p class="text-gray-400 text-xs">{{ __('messages.chats_start_conversation') }}</p>
                 </div>
             @endforelse
         </div>
@@ -58,10 +58,10 @@
             @csrf
             <input type="hidden" name="product_id" value="{{ $chat->product_id }}">
             <!-- Si tu lógica usa chat_id directamente, asegúrate de pasarlo aquí si es necesario -->
-            <input type="text" name="content" placeholder="Escribe un mensaje..." required autocomplete="off"
+            <input type="text" name="content" placeholder="{{ __('messages.chats_placeholder') }}" required autocomplete="off"
                 class="flex-1 text-xs border border-gray-300 rounded-xl px-4 py-3 focus:outline-none focus:border-[#1B4D3E] text-gray-800 bg-white">
             <button type="submit" class="px-5 py-3 bg-[#1B4D3E] hover:bg-[#14382c] text-white text-xs font-bold rounded-xl transition shadow-sm tracking-wide shrink-0">
-                Enviar
+                {{ __('messages.chats_send') }}
             </button>
         </form>
     </div>

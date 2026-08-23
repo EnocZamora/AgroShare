@@ -11,11 +11,16 @@ class CheckRole
 {
     public function handle(Request $request, Closure $next, ...$roles): Response
     {
-        // Verifica si está autenticado y si su rol está en los permitidos
-        if (Auth::check() && in_array(Auth::user()->role, $roles)) {
-            return $next($request);
+        if (!Auth::check()) {
+            return redirect()->route('login');
         }
 
-        abort(403, 'Acceso no autorizado.');
+        $userRole = Auth::user()->rol_sistema ?? 'USUARIO';
+
+        if (!in_array($userRole, $roles)) {
+            abort(403, 'Acceso no autorizado.');
+        }
+
+        return $next($request);
     }
 }

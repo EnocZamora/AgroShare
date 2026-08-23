@@ -10,7 +10,7 @@ use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
-| Rutas de Idioma (NUEVO)
+| Rutas de Idioma
 |--------------------------------------------------------------------------
 */
 Route::get('lang/{lang}', function ($lang) {
@@ -61,6 +61,8 @@ Route::middleware(['auth'])->group(function () {
     // Chats
     Route::get('/chats', [ChatController::class, 'index'])->name('chats.index');
     Route::get('/chats/{chat}', [ChatController::class, 'show'])->name('chats.show');
+    Route::post('/chats', [ChatController::class, 'store'])->name('chats.store');
+    Route::patch('/chats/{chat}/archive', [ChatController::class, 'toggleArchive'])->name('chats.archive');
 
     // Profile
     Route::get('/perfil', [ProfileController::class, 'show'])->name('profile.show');
@@ -77,10 +79,15 @@ Route::middleware(['auth'])->group(function () {
     // Payments
     Route::get('/payments/methods', [PaymentController::class, 'methods'])->name('payments.methods');
 
-    // Admin
-    Route::prefix('admin')->name('admin.')->group(function () {
+    // Admin - solo ADMINISTRADOR
+    Route::prefix('admin')->name('admin.')->middleware('role:ADMINISTRADOR')->group(function () {
         Route::get('/', [AdminController::class, 'index'])->name('index');
         Route::get('/audit', [AdminController::class, 'audit'])->name('audit');
+    });
+
+    // Auditor - solo AUDITOR
+    Route::prefix('auditor')->name('auditor.')->middleware('role:AUDITOR')->group(function () {
+        Route::get('/', [App\Http\Controllers\AuditorController::class, 'index'])->name('index');
     });
 
     // Logout

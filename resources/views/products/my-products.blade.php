@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
-@section('title', 'Agroshare - Mis Publicaciones')
+@section('title', __('messages.my_products_title'))
 
 @section('content')
 <div class="max-w-md mx-auto space-y-6 pb-16">
     
     <!-- Encabezado Superior -->
     <div class="bg-[#1B4D3E] text-white py-4 px-6 rounded-2xl shadow-sm text-center">
-        <h2 class="text-base font-bold tracking-wide">Mis publicaciones</h2>
+        <h2 class="text-base font-bold tracking-wide">{{ __('messages.my_products_title') }}</h2>
     </div>
 
     <!-- Pestañas de Estado Dinámicas -->
@@ -17,15 +17,15 @@
     <div class="flex justify-around border-b border-gray-200 pb-2 text-xs font-bold text-gray-500">
         <a href="{{ route('products.my-products', ['tab' => 'activas']) }}" 
            class="pb-2 relative {{ $currentTab == 'activas' ? 'text-[#1B4D3E] border-b-2 border-[#1B4D3E]' : 'hover:text-gray-800' }}">
-            Activas
+            {{ __('messages.my_products_tab_active') }}
         </a>
         <a href="{{ route('products.my-products', ['tab' => 'finalizadas']) }}" 
            class="pb-2 relative {{ $currentTab == 'finalizadas' ? 'text-[#1B4D3E] border-b-2 border-[#1B4D3E]' : 'hover:text-gray-800' }}">
-            Finalizadas
+            {{ __('messages.my_products_tab_finished') }}
         </a>
         <a href="{{ route('products.my-products', ['tab' => 'incompletas']) }}" 
            class="pb-2 relative {{ $currentTab == 'incompletas' ? 'text-[#1B4D3E] border-b-2 border-[#1B4D3E]' : 'hover:text-gray-800' }}">
-            Incompletas
+            {{ __('messages.my_products_tab_incomplete') }}
         </a>
     </div>
 
@@ -54,14 +54,14 @@
                     <div class="space-y-1">
                         <h4 class="text-sm font-bold text-white leading-tight">{{ $product->title }}</h4>
                         <p class="text-xs text-emerald-100 font-medium">
-                            C$ {{ number_format($product->price, 2) }} por {{ $product->unit }}
+                            C$ {{ number_format($product->price, 2) }} {{ __('messages.product_show_price_unit', ['unit' => $product->unit]) }}
                         </p>
                         <p class="text-[11px] text-emerald-200/90">
-                            {{ $product->stock }} {{ $product->unit }} disponibles
+                            {{ $product->stock }} {{ $product->unit }} {{ __('messages.my_products_available_since', ['date' => $product->created_at->format('d/m/Y')]) }}
                         </p>
                         @if(!empty($product->created_at))
                             <p class="text-[10px] text-emerald-300/80">
-                                Disponible desde el {{ $product->created_at->format('d/m/Y') }}
+                                {{ __('messages.my_products_available_since', ['date' => $product->created_at->format('d/m/Y')]) }}
                             </p>
                         @endif
                     </div>
@@ -76,7 +76,13 @@
                         {{ $status == 'activo' ? 'bg-emerald-600 text-white' : '' }}
                         {{ $status == 'finalizado' ? 'bg-red-600 text-white' : '' }}
                         {{ $status == 'incompleto' ? 'bg-amber-600 text-white' : 'bg-emerald-600 text-white' }}">
-                        {{ ucfirst($status) }}
+                        @if($status == 'activo')
+                            {{ __('messages.my_products_status_active') }}
+                        @elseif($status == 'finalizado')
+                            {{ __('messages.my_products_status_finished') }}
+                        @elseif($status == 'incompleto')
+                            {{ __('messages.my_products_status_incomplete') }}
+                        @endif
                     </span>
 
                     <!-- Botones de Cambio de Estado y Edición -->
@@ -88,7 +94,7 @@
                                     @method('PATCH')
                                     <input type="hidden" name="status" value="finalizado">
                                     <button type="submit" class="text-[9px] bg-red-600 hover:bg-red-700 text-white px-2 py-0.5 rounded transition font-bold">
-                                        Finalizar
+                                        {{ __('messages.my_products_button_finish') }}
                                     </button>
                                 </form>
                                 <form action="{{ route('products.update-status', $product->id) }}" method="POST">
@@ -96,7 +102,7 @@
                                     @method('PATCH')
                                     <input type="hidden" name="status" value="incompleto">
                                     <button type="submit" class="text-[9px] bg-amber-600 hover:bg-amber-700 text-white px-2 py-0.5 rounded transition font-bold">
-                                        Incompleto
+                                        {{ __('messages.my_products_button_incomplete') }}
                                     </button>
                                 </form>
                             @else
@@ -105,7 +111,7 @@
                                     @method('PATCH')
                                     <input type="hidden" name="status" value="activo">
                                     <button type="submit" class="text-[9px] bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-0.5 rounded transition font-bold">
-                                        Activar
+                                        {{ __('messages.my_products_button_activate') }}
                                     </button>
                                 </form>
                             @endif
@@ -113,10 +119,10 @@
 
                         <div class="flex items-center gap-1.5">
                             <a href="{{ route('products.show', $product->id) }}" class="text-[10px] bg-white/10 hover:bg-white/20 text-white px-2 py-1 rounded-lg transition font-medium">
-                                Ver
+                                {{ __('messages.my_products_button_view') }}
                             </a>
                             <a href="{{ route('products.edit', $product->id) }}" class="text-[10px] bg-white text-[#1B4D3E] px-2 py-1 rounded-lg hover:bg-emerald-50 transition font-bold">
-                                Editar
+                                {{ __('messages.my_products_button_edit') }}
                             </a>
                         </div>
                     </div>
@@ -125,23 +131,23 @@
             </div>
         @empty
             <div class="p-10 text-center bg-white rounded-2xl border border-gray-200 shadow-sm">
-                <p class="text-gray-500 text-xs">No hay publicaciones en esta sección.</p>
+                <p class="text-gray-500 text-xs">{{ __('messages.my_products_empty') }}</p>
             </div>
         @endforelse
     </div>
 
     <!-- Bloque de Consejo Institucional -->
     <div class="bg-[#1B4D3E] text-white p-5 rounded-2xl shadow-sm text-center space-y-1.5 mt-8">
-        <h4 class="text-xs font-bold tracking-wide text-emerald-200">Consejo</h4>
+        <h4 class="text-xs font-bold tracking-wide text-emerald-200">{{ __('messages.my_products_advice_title') }}</h4>
         <p class="text-xs text-emerald-50 leading-relaxed max-w-xs mx-auto">
-            Investiga precios similares para que tu producto sea competitivo y personalmente apto.
+            {{ __('messages.my_products_advice_text') }}
         </p>
     </div>
 
     <!-- Botón Inferior -->
     <div>
         <a href="{{ route('products.create') }}" class="block w-full py-3 bg-[#1B4D3E] hover:bg-[#14382c] text-white text-xs font-bold rounded-xl text-center shadow-md transition tracking-wide">
-            Publicar nuevo producto
+            {{ __('messages.my_products_new_button') }}
         </a>
     </div>
 

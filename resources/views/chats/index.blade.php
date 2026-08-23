@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Agroshare - Mensajes')
+@section('title', __('messages.chats_title'))
 
 @section('content')
 <div class="max-w-md mx-auto space-y-6 pb-20">
@@ -9,9 +9,9 @@
     <div class="bg-[#1B4D3E] text-white py-4 px-6 rounded-2xl shadow-sm flex items-center justify-between">
         <a href="{{ route('products.index') }}" class="text-xs font-bold text-white/90 hover:underline flex items-center gap-1">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-            Atrás
+            {{ __('messages.back') }}
         </a>
-        <h2 class="text-base font-bold tracking-wide">Mensajes</h2>
+        <h2 class="text-base font-bold tracking-wide">{{ __('messages.chats_title') }}</h2>
         <div class="w-10"></div>
     </div>
 
@@ -22,15 +22,15 @@
     <div class="flex justify-around border-b border-gray-200 pb-2 text-xs font-bold text-gray-500">
         <a href="{{ route('chats.index', ['tab' => 'todos']) }}" 
            class="pb-2 relative {{ $tab == 'todos' ? 'text-[#1B4D3E] border-b-2 border-[#1B4D3E]' : 'hover:text-gray-800' }}">
-            Todos
+            {{ __('messages.chats_tab_all') }}
         </a>
         <a href="{{ route('chats.index', ['tab' => 'no_leidos']) }}" 
            class="pb-2 relative {{ $tab == 'no_leidos' ? 'text-[#1B4D3E] border-b-2 border-[#1B4D3E]' : 'hover:text-gray-800' }}">
-            No leídos
+            {{ __('messages.chats_tab_unread') }}
         </a>
         <a href="{{ route('chats.index', ['tab' => 'archivados']) }}" 
            class="pb-2 relative {{ $tab == 'archivados' ? 'text-[#1B4D3E] border-b-2 border-[#1B4D3E]' : 'hover:text-gray-800' }}">
-            Archivados
+            {{ __('messages.chats_tab_archived') }}
         </a>
     </div>
 
@@ -66,10 +66,10 @@
                     <div class="space-y-0.5 min-w-0">
                         <h4 class="text-sm font-bold text-gray-900 truncate">{{ $otherUser->name ?? 'Usuario' }}</h4>
                         <p class="text-[11px] text-gray-600 truncate">
-                            Interesado en: <span class="text-[#1B4D3E] font-bold">{{ $chat->product->title ?? 'Producto' }}</span>
+                            {{ __('messages.chats_product_interested', ['product' => $chat->product->title ?? 'Producto']) }}
                         </p>
                         <p class="text-xs text-gray-500 truncate font-medium">
-                            {{ $lastMessage ? $lastMessage->content : 'Inicia la conversación...' }}
+                            {{ $lastMessage ? $lastMessage->content : __('messages.chats_start_conversation') }}
                         </p>
                     </div>
                 </a>
@@ -93,8 +93,8 @@
                         <form action="{{ route('chats.archive', $chat->id) }}" method="POST">
                             @csrf
                             @method('PATCH')
-                            <button type="submit" class="text-[10px] bg-emerald-100 hover:bg-emerald-200 text-[#1B4D3E] px-2.5 py-1 rounded-lg font-bold transition" title="{{ $chat->is_archived ? 'Desarchivar' : 'Archivar' }}">
-                                {{ $chat->is_archived ? 'Restaurar' : 'Archivar' }}
+                            <button type="submit" class="text-[10px] bg-emerald-100 hover:bg-emerald-200 text-[#1B4D3E] px-2.5 py-1 rounded-lg font-bold transition" title="{{ $chat->is_archived ? __('messages.chats_restore') : __('messages.chats_archive') }}">
+                                {{ $chat->is_archived ? __('messages.chats_restore') : __('messages.chats_archive') }}
                             </button>
                         </form>
                     </div>
@@ -106,9 +106,9 @@
                 <div class="w-12 h-12 bg-emerald-100 text-[#1B4D3E] rounded-full flex items-center justify-center mx-auto font-bold text-lg">💬</div>
                 <p class="text-gray-500 text-xs">
                     @if($tab === 'archivados')
-                        No tienes Chats archivados
+                        {{ __('messages.chats_no_chats_archived') }}
                     @else
-                        No tienes conversaciones activas en esta sección.
+                        {{ __('messages.chats_no_chats_active') }}
                     @endif
                 </p>
             </div>

@@ -15,7 +15,7 @@ class AuthController extends Controller
     public function showLogin()
     {
         if (Auth::check()) {
-            return redirect()->route('products.index');
+            return $this->redirectByRole();
         }
 
         return view('auth.login');
@@ -30,9 +30,9 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required|string',
         ], [
-            'email.required' => 'El correo electrónico es obligatorio.',
-            'email.email' => 'Ingresa un correo electrónico válido.',
-            'password.required' => 'La contraseña es obligatoria.',
+            'email.required' => __('messages.login_email_required'),
+            'email.email' => __('messages.login_email_valid'),
+            'password.required' => __('messages.login_password_required'),
         ]);
 
         $remember = $request->has('remember');
@@ -40,13 +40,28 @@ class AuthController extends Controller
         if (Auth::attempt($credentials, $remember)) {
             $request->session()->regenerate();
 
-            return redirect()->intended(route('products.index'))
-                ->with('success', '¡Bienvenido de nuevo a Agroshare, ' . Auth::user()->name . '!');
+            return $this->redirectByRole()
+                ->with('success', __('messages.login_success', ['name' => Auth::user()->name]));
         }
 
         return back()->withErrors([
-            'email' => 'Las credenciales proporcionadas no coinciden con nuestros registros.',
+            'email' => __('messages.login_invalid_credentials'),
         ])->onlyInput('email');
+    }
+
+    /**
+     * Redirige según el rol del usuario autenticado.
+     */
+    private function redirectByRole()
+    {
+        $user = Auth::user();
+        $role = $user->rol_sistema ?? 'USUARIO';
+
+        return match ($role) {
+            'ADMINISTRADOR' => redirect()->route('admin.index'),
+            'AUDITOR' => redirect()->route('auditor.index'),
+            default => redirect()->route('products.index'),
+        };
     }
 
     /**
@@ -55,7 +70,7 @@ class AuthController extends Controller
     public function showRegister()
     {
         if (Auth::check()) {
-            return redirect()->route('products.index');
+            return $this->redirectByRole();
         }
 
         return view('auth.register');
@@ -75,25 +90,23 @@ class AuthController extends Controller
             'municipality' => 'nullable|string|max:100',
             'preferred_language' => 'nullable|string|max:10',
         ], [
-            'name.required' => 'El nombre completo es obligatorio.',
-            'email.required' => 'El correo electrónico es obligatorio.',
-            'email.unique' => 'Este correo electrónico ya está registrado.',
-            'password.required' => 'La contraseña es obligatoria.',
-            'password.min' => 'La contraseña debe tener al menos 8 caracteres.',
-            'password.confirmed' => 'Las contraseñas no coinciden.',
+            'name.required' => __('messages.register_name_required'),
+            'email.required' => __('messages.register_email_required'),
+            'email.unique' => __('messages.register_email_unique'),
+            'password.required' => __('messages.register_password_required'),
+            'password.min' => __('messages.register_password_min'),
+            'password.confirmed' => __('messages.register_password_confirmed'),
         ]);
 
-        // Encriptar la contraseña antes de guardar
         $validated['password'] = Hash::make($validated['password']);
+        $validated['rol_sistema'] = 'USUARIO';
 
-        // Crear usuario
         $user = User::create($validated);
 
-        // Iniciar sesión automáticamente
         Auth::login($user);
 
         return redirect()->route('products.index')
-            ->with('success', '¡Cuenta creada exitosamente! Bienvenido a Agroshare, ' . $user->name . '.');
+            ->with('success', __('messages.register_success', ['name' => $user->name]));
     }
 
     /**
