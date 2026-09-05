@@ -56,6 +56,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+    Route::patch('/products/{product}/status', [ProductController::class, 'updateStatus'])->name('products.update-status');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
 
     // Chats
@@ -78,6 +79,10 @@ Route::middleware(['auth'])->group(function () {
 
     // Payments
     Route::get('/payments/methods', [PaymentController::class, 'methods'])->name('payments.methods');
+    Route::post('/payments/default', [PaymentController::class, 'setDefault'])->name('payments.default');
+    Route::get('/payments/checkout/{product?}', [PaymentController::class, 'checkout'])->name('payments.checkout');
+    Route::post('/payments/process', [PaymentController::class, 'process'])->name('payments.process');
+    Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store');
 
     // Admin - solo ADMINISTRADOR
     Route::prefix('admin')->name('admin.')->middleware('role:ADMINISTRADOR')->group(function () {

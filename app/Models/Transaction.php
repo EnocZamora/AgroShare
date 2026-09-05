@@ -6,24 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class PaymentMethod extends Model
+class Transaction extends Model
 {
     use HasFactory;
 
     protected $fillable = [
         'user_id',
-        'type',
-        'provider',
-        'account_number',
-        'account_holder',
-        'details',
-        'is_default',
-        'is_active',
-    ];
-
-    protected $casts = [
-        'is_default' => 'boolean',
-        'is_active' => 'boolean',
+        'amount',
+        'status',
+        'payment_method',
     ];
 
     public function user(): BelongsTo

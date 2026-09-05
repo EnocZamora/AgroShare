@@ -4,7 +4,7 @@
 
 @section('content')
 <div class="max-w-4xl mx-auto space-y-6">
-    
+
     <!-- Botón de Retorno -->
     <div>
         <a href="{{ route('products.index') }}" class="inline-flex items-center gap-1 text-xs font-bold text-[#1B4D3E] hover:underline">
@@ -15,7 +15,7 @@
 
     <!-- Contenedor Principal del Detalle -->
     <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden grid grid-cols-1 md:grid-cols-2 gap-6 p-6 md:p-8">
-        
+
         <!-- Imagen o Contenedor Visual del Producto -->
         <div class="w-full h-72 md:h-full min-h-[280px] bg-emerald-50/50 rounded-xl overflow-hidden flex items-center justify-center border border-gray-200 relative">
             @if(!empty($product->image))
@@ -44,12 +44,12 @@
                 </div>
 
                 <h1 class="text-xl md:text-2xl font-bold text-gray-900 leading-tight">{{ $product->title }}</h1>
-                
+
                 <div class="text-xl md:text-2xl font-extrabold text-[#1B4D3E]">
-                    ${{ number_format($product->price, 2) }} 
+                    ${{ number_format($product->price, 2) }}
                     <span class="text-xs font-normal text-gray-500">{{ __('messages.product_show_price_unit', ['unit' => $product->unit]) }}</span>
                 </div>
-                
+
                 <p class="text-xs text-gray-600 leading-relaxed pt-2">
                     {{ $product->description }}
                 </p>
@@ -69,15 +69,26 @@
 
                 @auth
                     @if(Auth::id() !== $product->user_id)
-                        <!-- Formulario seguro para iniciar chat con el vendedor -->
-                        <form action="{{ route('chats.store') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="product_id" value="{{ $product->id }}">
-                            <input type="hidden" name="content" value="Hola, estoy interesado en tu producto: {{ $product->title }}">
-                            <button type="submit" class="w-full bg-[#1B4D3E] hover:bg-[#14382c] text-white text-xs py-3 rounded-xl font-bold transition text-center shadow-sm tracking-wide">
-                                {{ __('messages.product_show_contact_button') }}
-                            </button>
-                        </form>
+                        <div class="space-y-2">
+                            <!-- Botón de Compra Directa Móvil -->
+                            <a href="{{ route('payments.checkout', $product->id) }}" class="w-full min-h-[48px] bg-[#1B4D3E] hover:bg-[#14382c] text-white text-xs py-3 px-4 rounded-2xl font-bold transition text-center shadow-sm tracking-wide flex items-center justify-center gap-2 active:scale-[0.99]">
+                                <svg class="w-4 h-4 text-emerald-300" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                                </svg>
+                                <span>{{ __('messages.checkout_buy_now') }}</span>
+                            </a>
+
+                            <!-- Formulario seguro para iniciar chat con el vendedor -->
+                            <form action="{{ route('chats.store') }}" method="POST">
+                                @csrf
+                                <input type="hidden" name="product_id" value="{{ $product->id }}">
+                                <input type="hidden" name="content" value="Hola, estoy interesado en tu producto: {{ $product->title }}">
+                                <button type="submit" class="w-full min-h-[44px] bg-emerald-50/80 border border-emerald-300 hover:bg-emerald-100 text-[#1B4D3E] text-xs py-2.5 px-4 rounded-2xl font-bold transition text-center shadow-xs tracking-wide flex items-center justify-center gap-2">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+                                    <span>{{ __('messages.product_show_contact_button') }}</span>
+                                </button>
+                            </form>
+                        </div>
                     @else
                         <div class="bg-emerald-50 border border-emerald-200 text-[#1B4D3E] text-xs p-3 rounded-xl text-center font-medium">
                             ✓ {{ __('messages.product_show_own_product') }}
